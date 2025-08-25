@@ -2,7 +2,13 @@
 
 Star Protection is a mobile endless runner built in Unity. It features a main menu, shop system, and core gameplay where players protect their star from incoming obstacles (planets, moons, and more) by tapping to destroy them. Shader Graph was used for visual effects, and a few assets were created in Krita.
 
+
+## Gameplay Preview
+![Gameplay Gif](https://github.com/user-attachments/assets/467b764b-c378-4874-b318-296a0beb7e7d)
+
 ## Screenshots
+![Main Menu](<img width="720" height="1604" alt="MainMenu" src="https://github.com/user-attachments/assets/42743cf4-93cc-4732-9971-b2cbacdac69a" />)
+
 
 ## Features
 - Endless runner gameplay with progressively increasing difficulty over time
