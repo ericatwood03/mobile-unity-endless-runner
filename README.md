@@ -27,6 +27,9 @@ Star Protection is a mobile endless runner built in Unity. It features a main me
 - Art/Assets: Krita
 
 ## Installation & Play
+1. Download the latest APK from [Releases](https://github.com/ericatwood03/mobile-unity-endless-runner/releases)
+2. Install on your Android device
+3. Launch **Star Protection** and play!
 
 ## Future Improvements
 - Enhanced UI design and polish for a smoother player experience
