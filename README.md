@@ -4,7 +4,7 @@ Star Protection is a mobile endless runner built in Unity. It features a main me
 
 
 ## Gameplay Preview
-![Gameplay Gif](Star-Protection/Star-Protection-Media/GameplayGif)
+![Gameplay Gif](https://github.com/user-attachments/assets/9d790995-f366-4b29-8cde-4ba30e2889e5)
 
 ## Screenshots
 ![Main Menu](<img width="720" height="1604" alt="MainMenu" src="https://github.com/user-attachments/assets/42743cf4-93cc-4732-9971-b2cbacdac69a" />)
