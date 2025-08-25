@@ -17,14 +17,14 @@ Star Protection is a mobile endless runner built in Unity. It features a main me
 ## Features
 - Endless runner gameplay with progressively increasing difficulty over time
 - Save/load system for in-game currency and cosmetic items
-- Power-up system demonstrating OOP concepts such as polymorphism
-- Interactive UI with menu, sound toggle, and feedback
+- Power-up system demonstrating object-oriented programing concepts such as polymorphism
+- Interactive UI including menu, sound toggle, and feedback
 
 ## Tech Stack
 - Engine: Unity(C#)
 - Platform: Mobile(Android)
 - Version Control: Git + GitHub
-- -Art/Assets: Krita
+- Art/Assets: Krita
 
 ## Installation & Play
 
