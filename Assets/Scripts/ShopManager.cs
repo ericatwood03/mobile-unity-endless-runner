@@ -1,13 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class ShopManager : MonoBehaviour
 {
     public static ShopManager sManager { get; private set; } //Set it as a Singleton
     public TextMeshProUGUI fragmentText;
+    public ScrollRect scrollArea;
     private List<string> unlockeds = new List<string>();
 
     //Initializes script if it doesn't exist, destroys itself if one does exist
@@ -30,6 +32,10 @@ public class ShopManager : MonoBehaviour
     void Start()
     {
         AmountCheck();
+        if (scrollArea != null)
+        {
+            scrollArea.verticalNormalizedPosition = 1f;
+        }
     }
 
     //Resets player fragment count text
@@ -64,7 +70,7 @@ public class ShopManager : MonoBehaviour
             }
         return false;
     }
-    
+
     public List<string> getList()
     {
         return unlockeds;

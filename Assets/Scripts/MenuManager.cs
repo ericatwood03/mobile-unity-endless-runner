@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -12,11 +14,16 @@ public class MenuManager : MonoBehaviour
     //Variables
     public GameObject instructions;
     public TextMeshProUGUI fragmentText;
+    public Button musicToggler;
 
-    //Updates Fragment UI to current amount
+    //Updates Fragment UI to current amount & Sets the music toggle onCLick
     public void Start()
     {
         fragmentText.text = FragmentManager.fManager.getFragments().ToString("0");
+        if (musicToggler != null)
+        {
+            musicToggler.onClick.AddListener(() => GameObject.FindWithTag("Audio").GetComponent<AudioManager>().toggleMusic());
+        }
     }
 
     //Loads the game scene
