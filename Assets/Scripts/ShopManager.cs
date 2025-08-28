@@ -10,7 +10,7 @@ public class ShopManager : MonoBehaviour
     public static ShopManager sManager { get; private set; } //Set it as a Singleton
     public TextMeshProUGUI fragmentText;
     public ScrollRect scrollArea;
-    private List<string> unlockeds = new List<string>();
+    private HashSet<string> unlockeds = new HashSet<string>();
 
     //Initializes script if it doesn't exist, destroys itself if one does exist
     //Loads previous customization data and allows saving list data
@@ -63,21 +63,20 @@ public class ShopManager : MonoBehaviour
     //Takes a string and checks the list for said string and returns true or false based on it.
     public bool CheckList(string star)
     {
-        for (int i = 0; i < unlockeds.Count; i++)
-            if (unlockeds[i] == star)
-            {
-                return true;
-            }
+        if (unlockeds.Contains(star))
+        {
+            return true;
+        }
         return false;
     }
 
-    public List<string> getList()
+    public HashSet<string> getUnlockeds()
     {
         return unlockeds;
     }
 
-    public void setList(List<string> stars)
+    public void setUnlockeds(IEnumerable<string> stars)
     {
-        unlockeds = stars;
+        unlockeds = new HashSet<string>(stars);
     }
 }

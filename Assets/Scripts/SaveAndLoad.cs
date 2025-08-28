@@ -24,6 +24,7 @@ public class SaveAndLoad : MonoBehaviour
             Destroy(gameObject); // Prevents duplicates
         }
         LoadData();
+        
     }
     
     //Boolean that checks whether list can be saved or not based on if ShopManager exists 
@@ -33,9 +34,9 @@ public class SaveAndLoad : MonoBehaviour
     }
 
     //Saves the last remembered instance
-    public void TempSave(List<string> temp)
+    public void TempSave(IEnumerable<string> tempUnlockeds)
     {
-        tempList = temp;
+        tempList = new List<string>(tempUnlockeds);
     }
 
     //Sets model variables and then converts to JSON
@@ -49,7 +50,7 @@ public class SaveAndLoad : MonoBehaviour
         model.selected = CustomizationManager.CM.getSelected();
         model.color = CustomizationManager.CM.getColor();
         if (saveList)
-            model.unlockeds = ShopManager.sManager.getList();
+            model.unlockeds = new List<string>(ShopManager.sManager.getUnlockeds());
         else
         {
             model.unlockeds = tempList;
@@ -70,6 +71,10 @@ public class SaveAndLoad : MonoBehaviour
                 CustomizationManager.CM.Preset(model.selected, model.color);
             if (model.unlockeds != null)
                 tempList = model.unlockeds;
+            // else
+            // {
+            //     Debug.Log(tempHash);
+            // }
         }
     }
 
@@ -80,7 +85,7 @@ public class SaveAndLoad : MonoBehaviour
         {
             SaveDataModel model = JsonUtility.FromJson<SaveDataModel>(File.ReadAllText(Application.persistentDataPath + "/save.json"));
             if (model.unlockeds != null)
-                ShopManager.sManager.setList(model.unlockeds);
+                ShopManager.sManager.setUnlockeds(model.unlockeds);
         }
     }
 
