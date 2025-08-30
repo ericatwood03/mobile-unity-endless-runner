@@ -37,7 +37,7 @@ public class HitFlash : MonoBehaviour
     //Sets flash until the flash time is over
     private IEnumerator HitFlasher(){
         SetFlashColor();
-        float currentFlashAmount = 0f;
+        float currentFlashAmount = 0;
         float elapsedTime = 0f;
         while(elapsedTime < _flashTime){
             elapsedTime += Time.deltaTime;

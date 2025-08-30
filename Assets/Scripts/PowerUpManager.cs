@@ -5,21 +5,27 @@ using UnityEngine;
 public class PowerUpManager : MonoBehaviour //Monobehaviour allows you to define functionality of scripts through componenets and enables use of code based on events
 {
     //Variables
-
+    [Header ("Script References")]
     public Score scoreRef;
     public SpawnAndChase scRef;
     public ScrollingBG scrollRef;
+
     public List<PowerUp> powerUps = new List<PowerUp>();
     public PowerUpUI powerUpUI;
     public GameObject player;
     public ParticleSystem starTrail;
     
+    [Header ("Power Ups")]
     private PowerUp powerUp1;
     private PowerUp powerUp2;
+
+    [Header ("Time Checks")]
     private float playTime;
     private float checkTime = 20;
     private float checkUp = 20;
     private float waitSeconds = 3f;
+
+    [Header ("Randomizer Ints")]
     private int p1;
     private int p2;
 

@@ -34,8 +34,10 @@ public class FlashManager : MonoBehaviour
     public AnimationCurve getCurve(){
         return _flashSpeedCurve;
     }
+    
     //Takes a Vector3 parameter position, and then uses that to play the explosion particle at the Vector3 location given
-    public void Explode(Vector3 position){
+    public void Explode(Vector3 position)
+    {
         particeObj.transform.position = position;
         explosion.Play();
     }

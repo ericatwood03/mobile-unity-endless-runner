@@ -10,9 +10,10 @@ public abstract class PowerUp : ScriptableObject
     //Variables
     public string powerUpName;
     public string description;
-    
+
     //Abstract methods can't have instructions inside it
     //Abstract methods are overwritten by classes that inherit this class
+
     public abstract void Activate(GameObject player);
     public abstract void AfterDelay();
 }

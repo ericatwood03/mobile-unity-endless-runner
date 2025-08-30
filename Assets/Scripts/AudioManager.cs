@@ -6,16 +6,22 @@ public class AudioManager : MonoBehaviour
 {
     //Variables
     public static AudioManager audioManager { get; private set; } //Set it as a Singleton
+
+    [Header("Audio Sources")]
     [SerializeField] AudioSource musicSource;
     [SerializeField] AudioSource SFXSource;
 
+    [Header("Audio Clips")]
     public AudioClip menuMusic;
     public AudioClip gameMusic;
     public AudioClip buttonClick;
+
+    [Header("Sprites")]
     public Sprite unmute;
     public Sprite mute;
-    private Sprite sprite;
+
     private bool muted = false;
+    private Image musicButtonImage;
 
     //Initializes script if it doesn't exist, destroys itself if one does exist
     private void Awake()
@@ -31,21 +37,35 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    //As soon as game is started Menu music plays if it isnt muted
-    private void Start()
-    {    
-        musicSource.clip = menuMusic;
-        if(!muted)
-            musicSource.Play();
+    //Updates Active Scene every OnEnable call
+    private void OnEnable()
+    {
+        SceneManager.activeSceneChanged += OnActiveSceneChanged;
     }
 
-    //Checks to see if on the menu screen then if muted changes the music button sprite
-    void Update()
+    private void OnDisable()
     {
-        if (SceneManager.GetActiveScene().name == "Menu" && muted)
+        SceneManager.activeSceneChanged -= OnActiveSceneChanged;
+    }
+
+    //Checks to see if on the menu screen then sets the music button image 
+    //if muted changes the music button sprite
+    private void OnActiveSceneChanged(Scene oldscene, Scene newScene)
+    {
+        if (newScene.name == "Menu")
         {
-            GameObject.Find("/Buttons/Music Button").GetComponent<Image>().sprite = mute;
+            musicButtonImage = GameObject.Find("/Buttons/Music Button").GetComponent<Image>();
+            if(musicButtonImage != null && muted)
+                musicButtonImage.sprite = mute;
         }
+    }
+
+    //As soon as game is started Menu music plays if it isnt muted
+    private void Start()
+    {
+        musicSource.clip = menuMusic;
+        if (!muted)
+            musicSource.Play();
     }
 
     //Stops the music then changes it to Game music before playing again
@@ -79,13 +99,13 @@ public class AudioManager : MonoBehaviour
         {
             muted = true;
             musicSource.Stop();
-            GameObject.Find("/Buttons/Music Button").GetComponent<Image>().sprite = mute;
+            musicButtonImage.sprite = mute;
         }
         else
         {
             muted = false;
             musicSource.Play();
-            GameObject.Find("/Buttons/Music Button").GetComponent<Image>().sprite = unmute;
+            musicButtonImage.sprite = unmute;
         }
     }
 

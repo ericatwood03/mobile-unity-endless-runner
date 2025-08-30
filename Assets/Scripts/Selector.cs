@@ -14,25 +14,22 @@ public class Selector : MonoBehaviour
     private Transform CostObject;
     private int fcost;
     private bool inUse = false;
+    private Color buyTextColor;
+    private Color starColor;
+    private GameObject selectText;
+    private GameObject selectedText;
+    private GameObject fragmentObj;
 
-    //Checks if the star customization has been bought if so changes necessary UI.
+
     //If not a cost object is created and then the cost of the customization is calculated,
     //Aswell as if the player can currently buy it or not
     void Start()
     {
-        if (gameObject.name == CustomizationManager.CM.getSelected())
-            inUse = true;
-        if (gameObject.name != "Gold")
-            isBought = ShopManager.sManager.CheckList(gameObject.name);
-        else
-        {
-            isBought = true;
-        }
+        SetObjects();
+        UpdateStatus();
         if (!isBought)
         {
-            CostObject = transform.Find("Cost");
-            fcost = int.Parse(CostObject.GetComponent<TextMeshProUGUI>().text);
-            canBuy = FragmentManager.fManager.getFragments() >= fcost;
+            SetPrice();
         }
         else
         {
@@ -48,15 +45,40 @@ public class Selector : MonoBehaviour
             ColorButton(75, 75, 75, 255);
             ColorChange();
         }
+    }
+
+    private void SetObjects()
+    {
+        CostObject = transform.Find("Cost");
+        if(CostObject != null)
+            buyTextColor = CostObject.GetComponent<TextMeshProUGUI>().color;
+        selectText = transform.Find("Select").gameObject;
+        selectedText = transform.Find("Selected").gameObject;
+        if(gameObject.name != "Gold")
+            fragmentObj = transform.Find("Fragment").gameObject;
+        starColor = transform.Find("Image").gameObject.GetComponent<Image>().color;
+    }
+
+    //Checks if the star customization has been bought if so changes necessary UI.
+    private void UpdateStatus()
+    {
+        if (gameObject.name == CustomizationManager.CM.getSelected())
+        {
+            inUse = true;
+            ColorButton(155, 9, 255, 255);
+        }
+        if (gameObject.name != "Gold")
+            isBought = ShopManager.sManager.CheckList(gameObject.name);
         else
         {
-            if (!inUse)
-                ColorButton(238, 230, 230, 255);
-            else
-            {
-                ColorButton(155, 9, 255, 255);
-            }
+            isBought = true;
         }
+    }
+
+    private void SetPrice()
+    {
+            fcost = int.Parse(CostObject.GetComponent<TextMeshProUGUI>().text);
+            canBuy = FragmentManager.fManager.getFragments() >= fcost;
     }
 
     //Takes rgba values and then colors the button based on those values
@@ -99,10 +121,11 @@ public class Selector : MonoBehaviour
             ShopManager.sManager.AmountCheck();
             isBought = true;
             CostObject.gameObject.SetActive(false);
-            transform.Find("Fragment").gameObject.SetActive(false);
-            transform.Find("Select").gameObject.SetActive(true);
-            ShopManager.sManager.AddToList(gameObject.name);
+            fragmentObj.SetActive(false);
+            selectText.SetActive(true);
+            ShopManager.sManager.AddToUnlockeds(gameObject.name);
             SaveAndLoad.SAL.SaveData();
+            ColorButton(238, 230, 230, 255);
         }
     }
 
@@ -111,33 +134,35 @@ public class Selector : MonoBehaviour
     {
         if (!canBuy)
         {
-            CostObject.GetComponent<TextMeshProUGUI>().color = Color.red;
+            buyTextColor = Color.red;
         }
         else
         {
             Color newColor;
             if (ColorUtility.TryParseHtmlString("00149D", out newColor))
             {
-                CostObject.GetComponent<TextMeshProUGUI>().color = newColor;
+                buyTextColor = newColor;
             }
         }
     }
 
-    //Sets inUse to true, passes info to CustomizationManager, and changes UI text
+    //Sets inUse to true, passes info to CustomizationManager, and updates UI
     private void Select()
     {
-        transform.Find("Select").gameObject.SetActive(false);
-        transform.Find("Selected").gameObject.SetActive(true);
+        selectText.SetActive(false);
+        selectedText.SetActive(true);
         inUse = true;
-        CustomizationManager.CM.Customize(gameObject.name, transform.Find("Image").gameObject.GetComponent<Image>().color);
+        ColorButton(155, 9, 255, 255);
+        CustomizationManager.CM.Customize(gameObject.name, starColor);
     }
 
-    //Sets inUse to false and changes UI text
+    //Sets inUse to false and updates UI
     public void Deselect()
     {
-        transform.Find("Select").gameObject.SetActive(true);
-        transform.Find("Selected").gameObject.SetActive(false);
+        selectText.SetActive(true);
+        selectedText.SetActive(false);
         inUse = false;
+        ColorButton(238, 230, 230, 255);
     }
 
     //Changes UI text based on star and whether its inUse
@@ -145,15 +170,15 @@ public class Selector : MonoBehaviour
     {
         if (gameObject.name != "Gold")
         {
-            transform.Find("Cost").gameObject.SetActive(false);
-            transform.Find("Fragment").gameObject.SetActive(false);
+            CostObject.gameObject.SetActive(false);
+            fragmentObj.SetActive(false);
         }
         if (!inUse)
-            transform.Find("Select").gameObject.SetActive(true);
+            selectText.SetActive(true);
         else
         {
-            transform.Find("Selected").gameObject.SetActive(true);
-            transform.Find("Select").gameObject.SetActive(false);
+            selectedText.SetActive(true);
+            selectText.SetActive(false);
         }
     }
     

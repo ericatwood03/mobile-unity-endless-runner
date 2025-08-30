@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Customizer : MonoBehaviour
@@ -8,10 +6,13 @@ public class Customizer : MonoBehaviour
     public Sprite modified;
     public ParticleSystem starTrail;
     private Color32 color;
+    private SpriteRenderer starSpriteRenderer;
 
     //Checks if gold star is in use, if not calls CustomizeStar()
     void Start()
     {
+        starSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+
         color = CustomizationManager.CM.getColor();
         if (CustomizationManager.CM.getSelected() != "Gold")
         {
@@ -23,8 +24,8 @@ public class Customizer : MonoBehaviour
     //Changes star sprite to the modifiable version and sets the color to the selected color
     private void CustomizeStar()
     {
-        gameObject.GetComponent<SpriteRenderer>().sprite = modified;
-        gameObject.GetComponent<SpriteRenderer>().color = color;
+        starSpriteRenderer.sprite = modified;
+        starSpriteRenderer.color = color;
     }
 
     //Changes trail color to the selected color

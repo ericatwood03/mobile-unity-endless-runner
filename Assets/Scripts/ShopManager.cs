@@ -28,7 +28,7 @@ public class ShopManager : MonoBehaviour
         SaveAndLoad.SAL.SaveList(true);
     }
 
-    //Sets player fragment count text
+    //Sets player fragment count text and starts scroll area at the top
     void Start()
     {
         AmountCheck();
@@ -55,7 +55,7 @@ public class ShopManager : MonoBehaviour
     }
 
     //Adds the star name given to the list
-    public void AddToList(string star)
+    public void AddToUnlockeds(string star)
     {
         unlockeds.Add(star);
     }
@@ -63,11 +63,7 @@ public class ShopManager : MonoBehaviour
     //Takes a string and checks the list for said string and returns true or false based on it.
     public bool CheckList(string star)
     {
-        if (unlockeds.Contains(star))
-        {
-            return true;
-        }
-        return false;
+        return unlockeds.Contains(star);
     }
 
     public HashSet<string> getUnlockeds()
