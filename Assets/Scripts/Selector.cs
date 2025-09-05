@@ -9,20 +9,27 @@ public class Selector : MonoBehaviour
 {
     //Variables
     public ShopUIManager confirmer;
+
     private bool isBought = false;
     private bool canBuy;
+
     private Transform CostObject;
     private int fcost;
+
     private bool inUse = false;
-    private Color buyTextColor;
+
+    //Colors 
+    private TextMeshProUGUI buyText;
     private Color starColor;
+
+    //Button UI Objects
     private GameObject selectText;
     private GameObject selectedText;
     private GameObject fragmentObj;
 
 
-    //If not a cost object is created and then the cost of the customization is calculated,
-    //Aswell as if the player can currently buy it or not
+    //Initializes objects and there saved status, 
+    //then reveals necessary text depending on if each customization was bought
     void Start()
     {
         SetObjects();
@@ -47,14 +54,15 @@ public class Selector : MonoBehaviour
         }
     }
 
+    //Initializes and caches button objects 
     private void SetObjects()
     {
         CostObject = transform.Find("Cost");
-        if(CostObject != null)
-            buyTextColor = CostObject.GetComponent<TextMeshProUGUI>().color;
+        if (CostObject != null)
+            buyText = CostObject.GetComponent<TextMeshProUGUI>();
         selectText = transform.Find("Select").gameObject;
         selectedText = transform.Find("Selected").gameObject;
-        if(gameObject.name != "Gold")
+        if (gameObject.name != "Gold")
             fragmentObj = transform.Find("Fragment").gameObject;
         starColor = transform.Find("Image").gameObject.GetComponent<Image>().color;
     }
@@ -75,10 +83,11 @@ public class Selector : MonoBehaviour
         }
     }
 
+    //Sets customization price with correct color
     private void SetPrice()
     {
-            fcost = int.Parse(CostObject.GetComponent<TextMeshProUGUI>().text);
-            canBuy = FragmentManager.fManager.getFragments() >= fcost;
+        fcost = int.Parse(CostObject.GetComponent<TextMeshProUGUI>().text);
+        canBuy = FragmentManager.fManager.getFragments() >= fcost;
     }
 
     //Takes rgba values and then colors the button based on those values
@@ -134,14 +143,14 @@ public class Selector : MonoBehaviour
     {
         if (!canBuy)
         {
-            buyTextColor = Color.red;
+            buyText.color = Color.red;
         }
         else
         {
             Color newColor;
             if (ColorUtility.TryParseHtmlString("00149D", out newColor))
             {
-                buyTextColor = newColor;
+                buyText.color = newColor;
             }
         }
     }
