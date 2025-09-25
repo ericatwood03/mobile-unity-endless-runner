@@ -5,7 +5,7 @@ public class FlashManager : MonoBehaviour
     //Variables
     public static FlashManager Manager { get; private set; } //Set it as a Singleton
 
-    [ColorUsage(true, true)] //Allow for intensity change
+    [ColorUsage(true, true)] //Allows for intensity change
     [SerializeField] private Color _flashColor = Color.red;
     [SerializeField] private float _flashTime = 0.25f;
     [SerializeField] private AnimationCurve _flashSpeedCurve;

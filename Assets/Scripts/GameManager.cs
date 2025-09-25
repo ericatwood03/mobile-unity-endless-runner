@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public Score fscore;
     public SpawnAndChase obstacles;
     public PowerUpManager pumRef;
-
+    
     private static float playTime = 0;
 
     //Pause Function Booleans
@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour
     {
         if (!timePause && !gameEnded)
             playTime += Time.deltaTime;
-        obstacles.removeNull();
         if (!chasePause)
             obstacles.Chase();
         ObstacleIncrease();
@@ -63,11 +62,12 @@ public class GameManager : MonoBehaviour
     // Stops and deactivates score and obstacle spawn. Sets gameEnded to true and sets up GameOver screen. And Saves fragment data 
     public void GameOver()
     {
+        obstacles.Clear();
         gameEnded = true;
+        playTime = 0;
         fscore.stopScore();
         SaveAndLoad.SAL.SaveData();
         OverHUD.Setup(fscore.getScore());
-        obstacles.Clear();
         Destroy(this.gameObject.GetComponent<PowerUpManager>());
         Destroy(gameObject);
     }

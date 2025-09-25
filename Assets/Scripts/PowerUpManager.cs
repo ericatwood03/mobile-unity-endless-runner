@@ -10,6 +10,7 @@ public class PowerUpManager : MonoBehaviour //Monobehaviour allows you to define
     public SpawnAndChase scRef;
     public GameManager manager;
     public ScrollingBG scrollRef;
+    private GameObject fake;
 
     public List<PowerUp> powerUps = new List<PowerUp>();
     public PowerUpUI powerUpUI;

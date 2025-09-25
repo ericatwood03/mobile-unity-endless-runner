@@ -1,20 +1,18 @@
-using UnityEditor;
 using UnityEngine;
 
 public class SelfDestroy : MonoBehaviour
 {
     //Scripts
-    public SpawnAndChase reference;
-    public HitFlash hitFlash; 
-
+    private SpawnAndChase reference;
+    private HitFlash hitFlash; 
 
     //Variables
     private int hp;
-        
-    //Calls SetHP() first
-    void Start()
+
+    //Sets reference script
+    public void SetScripts(SpawnAndChase sacScript)
     {
-        SetHP();
+        reference = sacScript;
     }
 
     // Constantly checks for touch input then checks if then runs checkCollide()
@@ -32,42 +30,25 @@ public class SelfDestroy : MonoBehaviour
     }
 
     //Sets hp based on what the obstacle is
-    private void SetHP(){
-        if(this.gameObject.name.Contains("AsteroidM") || this.gameObject.name.Contains("AsteroidS") || this.gameObject.name.Contains("AsteroidXS") ){
-            hp = 1;
-        }
-        else if(this.gameObject.name.Contains("AsteroidL")){
-            hp = 2;
-        }
-        else if(this.gameObject.name.Contains("Moon_1") || this.gameObject.name.Contains("Moon_2") || this.gameObject.name.Contains("Moon_3") || this.gameObject.name.Contains("OddMoon")){
-            hp = 3;
-        }
-        else if(this.gameObject.name.Contains("Planet_1") || this.gameObject.name.Contains("Planet_2")){
-            hp = 4;
-        }
-        else if(this.gameObject.name.Contains("Planet_3") || this.gameObject.name.Contains("Planet_4")){
-            hp = 5;
-        }
-        else if(this.gameObject.name.Contains("Planet_5") || this.gameObject.name.Contains("Planet_6") || 
-        this.gameObject.name.Contains("Planet_7") || this.gameObject.name.Contains("Planet_8") || this.gameObject.name.Contains("Planet_9")){
-            hp = 6;
-        }
-        else if(this.gameObject.name.Contains("Planet_10") || this.gameObject.name.Contains("Planet_11")){
-            hp = 8;
-        }
-        else{
-            hp = 10;;
-        }
+    public void SetHP(int startHP)
+    {
+        hp = startHP;
     }
+
     //Removes a hitpoint from the obstacle and calls the HitFlash script until it reaches 0, which then destroys the obstacle
-    public void Hit(){
+    public void Hit()
+    {
         FragmentManager.fManager.addFragments(1);
         hp -= TapDamage.Damager.getDmg();
-        if(hp <= 0){
+        if (hp <= 0)
+        {
             FlashManager.Manager.Explode(this.gameObject.transform.position); // Calls a Particle Explosion
-            Destroy(this.gameObject); //Destroys object
+            if(hitFlash != null)
+                hitFlash.Revert();
+            reference.CallRelease(this.gameObject); 
         }
-        else{
+        else
+        {
             Flash();
         }
     }

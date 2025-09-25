@@ -14,7 +14,8 @@ public class HitFlash : MonoBehaviour
     private Coroutine _hitFlashCoroutine; //Coroutine to run flash
 
     //Called before using CallHitFlash to set the sprite renderer and then call Init()
-    public void Setup(SpriteRenderer spriteRenderer){
+    public void Setup(SpriteRenderer spriteRenderer)
+    {
         _spriteRenderer = spriteRenderer;
         Init();
     }
@@ -29,8 +30,15 @@ public class HitFlash : MonoBehaviour
         _flashSpeedCurve = FlashManager.Manager.getCurve();
     }
 
+    //Reverts Flash Amount to 0 in case deactivated before resetting
+    public void Revert()
+    {
+        _material.SetFloat("_FlashAmount", 0);
+    }
+
     //Starts a coroutine on HitFlasher
-    public void CallHitFlash(){
+    public void CallHitFlash()
+    {
         _hitFlashCoroutine = StartCoroutine(HitFlasher());
     }
     

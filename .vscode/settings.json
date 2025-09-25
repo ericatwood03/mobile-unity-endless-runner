@@ -56,5 +56,10 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Star-Protection.sln"
+    "dotnet.defaultSolution": "Star-Protection.sln",
+    "dotnet.server.launchTimeout": 60000,
+    "dotnet.server.useOmnisharp": false,
+    "csharp.suppressDotnetRestoreNotification": true,
+    "dotnet.server.useProjectBuild": false,
+    "dotnet.projects.enableFileBasedPrograms": false
 }

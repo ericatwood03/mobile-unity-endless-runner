@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 32254897}
   - component: {fileID: 32254896}
+  - component: {fileID: 32254898}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -185,6 +186,7 @@ MonoBehaviour:
   - {fileID: 4399649162405063975, guid: baa6bbc8b8aff9d42990a894ee84c937, type: 3}
   - {fileID: 4079063232484755393, guid: 397b16ea5594e2f40826fbd4897bdd59, type: 3}
   player: {fileID: 8893143297281786252}
+  pooler: {fileID: 32254898}
 --- !u!4 &32254897
 Transform:
   m_ObjectHideFlags: 0
@@ -210,6 +212,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &32254898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32254895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e48bdf744e36cf44297add745826c426, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstInfoDict: {fileID: 6542638001902112681}
+  sacRef: {fileID: 32254896}
+  hfRef: {fileID: 461668364527193910}
 --- !u!1 &56393824
 GameObject:
   m_ObjectHideFlags: 0
@@ -13278,6 +13295,7 @@ GameObject:
   - component: {fileID: 361604789}
   - component: {fileID: 361604792}
   - component: {fileID: 361604793}
+  - component: {fileID: 6542638001902112681}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -13285,6 +13303,58 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &6542638001902112681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6542638001902112680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b19aa0a711ceb34799226fb715cf28b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  newDict:
+    dictItems:
+    - obstName: AsteroidXS
+      hp: 1
+    - obstName: AsteroidS
+      hp: 1
+    - obstName: AsteroidM
+      hp: 1
+    - obstName: AsteroidL
+      hp: 2
+    - obstName: Moon_1
+      hp: 3
+    - obstName: Moon_2
+      hp: 3
+    - obstName: Moon_3
+      hp: 3
+    - obstName: OddMoon
+      hp: 3
+    - obstName: Planet_1
+      hp: 4
+    - obstName: Planet_2
+      hp: 4
+    - obstName: Planet_3
+      hp: 5
+    - obstName: Planet_5
+      hp: 6
+    - obstName: Planet_6
+      hp: 6
+    - obstName: Planet_7
+      hp: 6
+    - obstName: Planet_8
+      hp: 6
+    - obstName: Planet_9
+      hp: 6
+    - obstName: Planet_10
+      hp: 8
+    - obstName: Planet_11
+      hp: 8
+    - obstName: Planet_12
+      hp: 10
 --- !u!114 &6778041137698115256
 MonoBehaviour:
   m_ObjectHideFlags: 0
