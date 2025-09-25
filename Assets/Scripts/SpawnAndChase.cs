@@ -8,22 +8,27 @@ public class SpawnAndChase : MonoBehaviour
     public static float playTime = 0;
     private static bool delay = true;
 
-    //Variables
+    //GameObjects
+    [Header ("Game Objects")]
     public GameObject[] spawnPoints;
     public GameObject[] prefabs;
     public GameObject player;
     
-    private List<GameObject> obstacles = new List<GameObject>();
+    private List<GameObject> activeObstacles = new List<GameObject>();
+    
+    //Integers
     private int limit = 3;
     private int maxLimit = 20;
-    private float point = 0;
-    private bool gameEnded = false;
     private int dupl = 0;
-    private static bool spawnPause = false;
-    private static bool chasePause = false;
-    private static bool timePause = false;
+
+    //Booleans
     private static bool shouldIgnore = false;
     private static bool pausing = false;
+
+    //Scripts
+    [Header("Scripts")]
+    public ObstaclePooler pooler;
+
 
     //Calls the WaitFor function for 2 seconds
     void Start()
@@ -31,42 +36,29 @@ public class SpawnAndChase : MonoBehaviour
         StartCoroutine(WaitFor(2)); //Coroutines still run on the main thread
     }
 
-    //Updates playTime variable, Cleans out the obstacles list, and then runs Chase()
-    void Update()
+    //Increases the limit of obstacles on the screen at once as long as the limit is below 8
+    public void UpdateMax()
     {
-        if(!timePause && !gameEnded)
-            playTime += Time.deltaTime;
-        obstacles.RemoveAll(item => item == null);
-        if(!chasePause)
-            Chase();
-    }
-    
-    
-    void FixedUpdate()
-    {
-        UpdateMax();
-        SpawnTester();
-    }
-
-    // Checks for every 200 seconds since game start up then 
-    // increases the limit of obstacles on the screen at once as long as the limit is below 8
-    private void UpdateMax(){
-        if(playTime > point + 150  && limit < maxLimit){
-            point = playTime;
+        if (limit < maxLimit)
+        {
             limit++;
         }
     }
 
     // Checks if there are less obstacles then limit and if delay is false. 
-    // If true then increments dupl by 1, if dupl is less then 2 and the game hasn't ended and the Spawn() action isnt paused 
-    // run SpawnChance and decrement dupl
-    private void SpawnTester(){
-        if(obstacles.Count <= limit && !delay){
+    // If true then increments dupl by 1, if dupl is less then 2 then runs Spawn function and decrement dupl 
+    public void SpawnTester()
+    {
+        if (activeObstacles.Count <= limit && !delay)
+        {
             dupl++;
-            if(dupl < 2 && !gameEnded && !spawnPause){ //dupl prevents two obstacles from being spawned at the same time and gameEnded stops spawning once game is over
+            //dupl prevents two obstacles from being spawned 
+            // at the same time and gameEnded stops spawning once game is over
+            if (dupl < 2)
+            {
                 SpawnChance();
             }
-            dupl --;
+            dupl--;
         }
     }
 
@@ -75,8 +67,8 @@ public class SpawnAndChase : MonoBehaviour
         var rand = Random.Range(0,150);
         var x = 8;
         // Sets x by how many obstacles exist
-        if(obstacles.Count > 3){
-            x -= obstacles.Count - 3;
+        if(activeObstacles.Count > 3){
+            x -= activeObstacles.Count - 3;
         }
         //If random num is less than or equal to x call Spawn()
         if(rand <=x){
@@ -86,7 +78,7 @@ public class SpawnAndChase : MonoBehaviour
 
     //  Calculates the rarity of each obstacle spawn based off of the time since the start of the game. 
     //  And then uses that rarity to calculate which obstacle should spawn
-    GameObject Rarity(){
+    private GameObject Rarity(){
         int a, b, c, d, e;
         var rand = Random.Range(0,9);
         if(playTime < 50){
@@ -141,18 +133,18 @@ public class SpawnAndChase : MonoBehaviour
     }
 
     //Moves all obstacles toward the Player(Star)
-    private void Chase(){
-        for(int i = 0; i < obstacles.Count; i++){
-            obstacles[i].transform.position = Vector3.MoveTowards(obstacles[i].transform.position, player.transform.position, 1f * Time.deltaTime);
+    public void Chase(){
+        for(int i = 0; i < activeObstacles.Count; i++){
+            activeObstacles[i].transform.position = Vector3.MoveTowards(activeObstacles[i].transform.position, player.transform.position, 1f * Time.deltaTime);
         }
     }
 
-    //Spawns a random obstacle at a random spawn location then add it to the obstacles list
-    private void Spawn(){
+    //Passes a random prefab and spawn location to SpawnObstacle()
+    private void Spawn()
+    {
         var sr = Random.Range(0, spawnPoints.Length);
-        GameObject randobj = Instantiate(Rarity(), spawnPoints[sr].transform.position, Quaternion.identity);
-        randobj.transform.position = new Vector3(randobj.transform.position.x, randobj.transform.position.y, 1); //Modifies the z position to be on screen
-        obstacles.Add(randobj);
+        pooler.SpawnObstacle(Rarity(), spawnPoints[sr].transform.position);
+
     }
 
     //Waits for the # provided by duration then sets delay to false
@@ -161,20 +153,34 @@ public class SpawnAndChase : MonoBehaviour
         delay = false;
     }
 
-    //Stops Spawn() from running and then destroys each object in the obstacles list before clearing it
-    public void Clear(){
-        gameEnded = true;
-        for(int i = 0; i < obstacles.Count; i++)
-            Destroy(obstacles[i].gameObject);
-        obstacles.Clear();
-        playTime = 0;
+    //Calls the Release method in ObjectPooler()
+    public void CallRelease(GameObject obstacle)
+    {
+        pooler.DespawnObstacle(obstacle);
+        DeleteActive(obstacle);
     }
 
-    // Pauses/Unpauses Spawn(), Chance(), and time updating
-    public void StopActions(bool Spawn, bool Chase, bool timeUpdate){
-        spawnPause = Spawn;
-        chasePause = Chase;
-        timePause = timeUpdate;
+    //Adds active obstacles to the list
+    public void AddActive(GameObject active)
+    {
+        activeObstacles.Add(active);
+    }
+
+    //Removes active obstacles from the list
+    public void DeleteActive(GameObject active)
+    {
+        activeObstacles.Remove(active);
+    }
+
+    //Stops Spawn() from running and then destroys each object in the obstacles list before clearing it
+    public void Clear()
+    {
+        for (int i = 0; i < activeObstacles.Count; i++)
+        {
+            pooler.DespawnObstacle(activeObstacles[i]);
+        }
+        activeObstacles.Clear();
+        playTime = 0;
     }
 
     //Sets shouldIgnore and pausing
@@ -189,9 +195,5 @@ public class SpawnAndChase : MonoBehaviour
 
     public bool getPause(){
         return pausing;
-    }
-    
-    public float getPlayedTime(){
-        return playTime;
     }
 }

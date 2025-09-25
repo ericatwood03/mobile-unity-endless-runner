@@ -6,6 +6,7 @@ public class GameOverHUD : MonoBehaviour
 {
 
     //Variables
+    [Header ("Texts")]
     public TextMeshProUGUI finalscoreText;
     public TextMeshProUGUI fragmentText;
     //Activates the GameOverHUD and sets the score text to the parameter taken in.

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -8,11 +6,16 @@ using System;
 public class ShopUIManager : MonoBehaviour
 {
     //Variables
+    [Header ("Choices")]
     public Button Yes;
     public Button No;
+
     public TextMeshProUGUI Text;
+
+    [Header ("Listeners")]
     private UnityEngine.Events.UnityAction listener1;
     private UnityEngine.Events.UnityAction listener2;
+
     private Action<bool> sendBack;
 
     //Activates UI and buttons and then runs Option based on which was clicked
@@ -20,7 +23,7 @@ public class ShopUIManager : MonoBehaviour
     {
         Text.text = "Would you like to spend " + cost.ToString("0") + " fragments?";
         sendBack = confirmation;
-        this.gameObject.SetActive(true);
+        gameObject.SetActive(true);
         if (listener1 != null) Yes.onClick.RemoveListener(listener1);
         if (listener2 != null) No.onClick.RemoveListener(listener2);
         listener1 = () => Option(true);
@@ -35,6 +38,6 @@ public class ShopUIManager : MonoBehaviour
         Yes.onClick.RemoveListener(listener1);
         No.onClick.RemoveListener(listener2);
         sendBack?.Invoke(yon);
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 }

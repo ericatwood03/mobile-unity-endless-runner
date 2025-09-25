@@ -5,7 +5,7 @@ public class FlashManager : MonoBehaviour
     //Variables
     public static FlashManager Manager { get; private set; } //Set it as a Singleton
 
-    [ColorUsage(true, true)] //Allow for intensity change
+    [ColorUsage(true, true)] //Allows for intensity change
     [SerializeField] private Color _flashColor = Color.red;
     [SerializeField] private float _flashTime = 0.25f;
     [SerializeField] private AnimationCurve _flashSpeedCurve;
@@ -34,8 +34,10 @@ public class FlashManager : MonoBehaviour
     public AnimationCurve getCurve(){
         return _flashSpeedCurve;
     }
+    
     //Takes a Vector3 parameter position, and then uses that to play the explosion particle at the Vector3 location given
-    public void Explode(Vector3 position){
+    public void Explode(Vector3 position)
+    {
         particeObj.transform.position = position;
         explosion.Play();
     }

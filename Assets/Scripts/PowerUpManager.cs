@@ -5,47 +5,50 @@ using UnityEngine;
 public class PowerUpManager : MonoBehaviour //Monobehaviour allows you to define functionality of scripts through componenets and enables use of code based on events
 {
     //Variables
-
+    [Header ("Script References")]
     public Score scoreRef;
     public SpawnAndChase scRef;
+    public GameManager manager;
     public ScrollingBG scrollRef;
+    private GameObject fake;
+
     public List<PowerUp> powerUps = new List<PowerUp>();
     public PowerUpUI powerUpUI;
     public GameObject player;
     public ParticleSystem starTrail;
     
+    [Header ("Power Ups")]
     private PowerUp powerUp1;
     private PowerUp powerUp2;
-    private float playTime;
-    private float checkTime = 20;
-    private float checkUp = 20;
+
+    [Header ("Time Checks")]
     private float waitSeconds = 3f;
+
+    [Header ("Randomizer Ints")]
     private int p1;
     private int p2;
 
-    // Update is called once per frame
-    // Checks every time playTime is >= checkTime then checkTime is increased and all gameplay actions are paused using toggleGameplay().
-    // Randomize() is run to set powerUp options then showChoices() is run
-    void Update()
+    //All gameplay actions are paused using toggleGameplay().
+    //Randomize() is run to set powerUp options then showChoices() is run
+    public void runPowerUp()
     {
-        playTime = scRef.getPlayedTime();
-        if(playTime > checkTime){
-            ToggleGameplay(true);
-            checkTime += checkUp;
-            Randomize();
-            showChoices();
-        }
+        ToggleGameplay(true);
+        Randomize();
+        showChoices();
     }
 
     // Pauses/Unpause all aspects of gameplay for UI choices
-    private void ToggleGameplay(bool toggle){
+    private void ToggleGameplay(bool toggle)
+    {
         scoreRef.StopTime(toggle);
-        scRef.StopActions(toggle, toggle, toggle);
+        manager.StopActions(toggle, toggle);
+        manager.pauseTime(toggle);
         scrollRef.stopScroll(toggle);
         scRef.tapIgnore(toggle, toggle);
-        if(toggle)
+        if (toggle)
             starTrail.Pause();
-        else{
+        else
+        {
             starTrail.Play();
         }
     }

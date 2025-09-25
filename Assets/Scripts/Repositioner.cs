@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Repositioner : MonoBehaviour
@@ -12,10 +10,10 @@ public class Repositioner : MonoBehaviour
     {
         float screenWidth = Screen.width;
         float screenHeight = Screen.height;
-        screenPosition = Camera.main.WorldToScreenPoint(this.gameObject.transform.position);
-        if(this.gameObject != null){
+        screenPosition = Camera.main.WorldToScreenPoint(transform.position);
+        if(transform != null){
             gameObject.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(screenWidth - edgeDistanceX, screenPosition.y, screenPosition.z));
-            screenPosition = Camera.main.WorldToScreenPoint(this.gameObject.transform.position);
+            screenPosition = Camera.main.WorldToScreenPoint(transform.position);
         }
     }
 }

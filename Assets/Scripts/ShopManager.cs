@@ -1,14 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class ShopManager : MonoBehaviour
 {
     public static ShopManager sManager { get; private set; } //Set it as a Singleton
     public TextMeshProUGUI fragmentText;
-    private List<string> unlockeds = new List<string>();
+    public ScrollRect scrollArea;
+    private HashSet<string> unlockeds = new HashSet<string>();
 
     //Initializes script if it doesn't exist, destroys itself if one does exist
     //Loads previous customization data and allows saving list data
@@ -26,10 +28,14 @@ public class ShopManager : MonoBehaviour
         SaveAndLoad.SAL.SaveList(true);
     }
 
-    //Sets player fragment count text
+    //Sets player fragment count text and starts scroll area at the top
     void Start()
     {
         AmountCheck();
+        if (scrollArea != null)
+        {
+            scrollArea.verticalNormalizedPosition = 1f;
+        }
     }
 
     //Resets player fragment count text
@@ -49,7 +55,7 @@ public class ShopManager : MonoBehaviour
     }
 
     //Adds the star name given to the list
-    public void AddToList(string star)
+    public void AddToUnlockeds(string star)
     {
         unlockeds.Add(star);
     }
@@ -57,21 +63,16 @@ public class ShopManager : MonoBehaviour
     //Takes a string and checks the list for said string and returns true or false based on it.
     public bool CheckList(string star)
     {
-        for (int i = 0; i < unlockeds.Count; i++)
-            if (unlockeds[i] == star)
-            {
-                return true;
-            }
-        return false;
+        return unlockeds.Contains(star);
     }
-    
-    public List<string> getList()
+
+    public HashSet<string> getUnlockeds()
     {
         return unlockeds;
     }
 
-    public void setList(List<string> stars)
+    public void setUnlockeds(IEnumerable<string> stars)
     {
-        unlockeds = stars;
+        unlockeds = new HashSet<string>(stars);
     }
 }

@@ -6,17 +6,27 @@ using UnityEngine.UI;
 public class PowerUpUI : MonoBehaviour
 {
     //Variables
+
+    [Header ("Buttons")]
     public Button Button1;
     public Button Button2;
+
+    [Header ("Titles")]
     public TextMeshProUGUI Title1;
     public TextMeshProUGUI Title2;
+
+    [Header ("Descriptions")]
     public TextMeshProUGUI Desc1;
     public TextMeshProUGUI Desc2;
 
+    [Header ("Listeners")]
     private UnityEngine.Events.UnityAction listener1;
     private UnityEngine.Events.UnityAction listener2;
+
+    [Header ("Random PowerUps")]
     private PowerUp option1;
     private PowerUp option2;
+    
     private Action<PowerUp> sendBack; // Allows for an easily reusable method
     
     //Sets the powerup options and sendback then shows the UI button choices for each powerUp using the 2 random powerUps passed in
