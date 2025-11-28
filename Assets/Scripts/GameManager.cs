@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     public Score fscore;
     public SpawnAndChase obstacles;
     public PowerUpManager pumRef;
+
+    public GameObject pauseMenu;
     
     private static float playTime = 0;
 
@@ -16,12 +18,20 @@ public class GameManager : MonoBehaviour
     private static bool chasePause = false;
     private static bool timePause = false;
     private bool gameEnded = false;
+    private bool parameterOne;
+    private bool parameterTwo;
 
     //Levels
     private int obstacleMaxLevel = 1;
     private int powerupLevel = 1;
 
     //Updates playTime and runs functions Chase and Increase obstacle and power-up functions
+    void Start()
+    {
+        Input.backButtonLeavesApp = true;
+    }
+
+    //Calls Chase and an increase to Obstacle max count and new PowerUp
     void Update()
     {
         if (!timePause && !gameEnded)
@@ -38,6 +48,38 @@ public class GameManager : MonoBehaviour
         if (!spawnPause && !gameEnded)
             obstacles.SpawnTester();
     }
+
+    //On Back button, Screen lock, and Other game exiting actions
+    void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+        {
+            Pause();
+        }
+        else
+        {
+            pauseMenu.SetActive(true);
+        }
+    }
+
+    //Sets timescale to 0, remembers state of game before pause, and activates pause menu
+    public void Pause()
+    {
+        bool parameterOne = obstacles.getIgnore();
+        bool parameterTwo = obstacles.getPause();
+        obstacles.tapIgnore(true, true);
+        Time.timeScale = 0f;
+        pauseMenu.SetActive(true);
+    }
+
+    // Resumes gameplay and sets timeScale back to 1
+    public void Resume()
+    {
+        Time.timeScale = 1f;
+        obstacles.tapIgnore(parameterOne, parameterTwo);
+        pauseMenu.SetActive(false);
+    }
+
 
     //Increases max obstacles every x seconds passed
     private void ObstacleIncrease()

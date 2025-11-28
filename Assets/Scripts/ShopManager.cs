@@ -36,6 +36,7 @@ public class ShopManager : MonoBehaviour
         {
             scrollArea.verticalNormalizedPosition = 1f;
         }
+        Input.backButtonLeavesApp = true;
     }
 
     //Resets player fragment count text

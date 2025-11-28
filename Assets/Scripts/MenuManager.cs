@@ -24,6 +24,7 @@ public class MenuManager : MonoBehaviour
         {
             musicToggler.onClick.AddListener(() => GameObject.FindWithTag("Audio").GetComponent<AudioManager>().toggleMusic());
         }
+        Input.backButtonLeavesApp = true;
     }
 
     //Loads the game scene
